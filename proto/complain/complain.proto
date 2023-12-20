@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "thestrikem.complain.v1;complainv1";
+
+service Complain {
+  rpc Create (CreateRequest) returns (CreateResponse);
+  rpc AllComplains(AllComplainsRequest) returns (AllComplainsResponse);
+}
+
+message CreateRequest {
+  string comment = 1;
+  string service = 2;
+  string problem = 3;
+}
+
+
+message CreateResponse {
+  string status = 1;
+  string error = 2;
+  string id = 3;
+}
+
+message AllComplainsRequest {
+  string service = 1;
+  string problem = 2;
+}
+
+message AllComplainsResponse {
+  repeated ComplainItem complain = 1;
+}
+
+message ComplainItem {
+  string id = 1;
+  string date = 2;
+  string comment = 3;
+  string service = 4;
+  string problem = 5;
+}
