@@ -15,7 +15,6 @@ message CreateRequest {
   string problem = 3;
 }
 
-
 message CreateResponse {
   string status = 1;
   string error = 2;

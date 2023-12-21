@@ -1,4 +1,4 @@
-module protos
+module github.com/TheStrikeM/complains-protos
 
 go 1.21
 
