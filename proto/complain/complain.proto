@@ -10,15 +10,17 @@ service Complain {
 }
 
 message CreateRequest {
-  string comment = 1;
-  string service = 2;
-  string problem = 3;
+  int32 trade = 1;
+  string comment = 2;
+  string service = 3;
+  string problem = 4;
 }
 
 message CreateResponse {
   string status = 1;
   string error = 2;
   string id = 3;
+  string trade = 4;
 }
 
 message AllComplainsRequest {
@@ -32,8 +34,9 @@ message AllComplainsResponse {
 
 message ComplainItem {
   string id = 1;
-  string date = 2;
-  string comment = 3;
-  string service = 4;
-  string problem = 5;
+  int32 trade = 2;
+  string date = 3;
+  string comment = 4;
+  string service = 5;
+  string problem = 6;
 }
