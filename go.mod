@@ -1,4 +1,4 @@
-module github.com/thestrikem/test
+module github.com/thestrikem/test-proto
 
 go 1.21
 
