@@ -9,7 +9,26 @@ service Complain {
   rpc AllComplains(AllComplainsRequest) returns (AllComplainsResponse); // Не сделано и не надо
   rpc Services (ServicesRequest) returns (ServicesResponse); // Не сделано
   rpc ProblemsByService (ProblemsByServiceRequest) returns (ProblemsByServiceResponse);
-//  rpc ServiceStats (ServiceStatsRequest) returns (ServiceStatsResponse);
+  rpc ServiceStats (ServiceStatsRequest) returns (ServiceStatsResponse);
+}
+
+message PercentItem {
+  string problemId = 1;
+  int64 count = 2;
+}
+message StatsItem {
+  string date = 1;
+  int64 count = 2;
+}
+
+message ServiceStatsRequest {
+  string id = 1;
+}
+message ServiceStatsResponse {
+  string name = 1;
+  string image = 2;
+  repeated PercentItem percentItems = 3;
+  repeated StatsItem statsItems = 4;
 }
 
 message CreateRequest {
