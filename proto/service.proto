@@ -1,12 +1,10 @@
 syntax = "proto3";
 
-package auth;
+package manager;
 
-option go_package = "thestrikem.complain.v1;complainv1";
+option go_package = "thestrikem.service.v1;servicev1";
 
-service Complain {
-  rpc Create (CreateRequest) returns (CreateResponse); // Сделано
-  rpc AllComplains(AllComplainsRequest) returns (AllComplainsResponse); // Не сделано и не надо
+service Service {
   rpc Services (ServicesRequest) returns (ServicesResponse); // Не сделано
   rpc ProblemsByService (ProblemsByServiceRequest) returns (ProblemsByServiceResponse);
   rpc ServiceStats (ServiceStatsRequest) returns (ServiceStatsResponse);
@@ -35,6 +33,8 @@ message ProblemsByServiceResponse {
 }
 
 
+
+//Потом
 message PercentItem {
   string problemID = 1;
   int32 percent = 2;
@@ -47,34 +47,4 @@ message ServiceStatsResponse {
   string image = 2;
   repeated PercentItem percent = 3;
   repeated int32 details = 4;
-}
-
-message CreateRequest {
-  int32 trader = 1;
-  string comment = 2;
-  string service = 3;
-  string problem = 4;
-}
-message CreateResponse {
-  string status = 1;
-  string error = 2;
-  string id = 3;
-  string trade = 4;
-}
-
-message AllComplainsRequest {
-  string service = 1;
-  string problem = 2;
-}
-message AllComplainsResponse {
-  repeated ComplainItem complain = 1;
-}
-
-message ComplainItem {
-  string id = 1;
-  int32 trader = 2;
-  string date = 3;
-  string comment = 4;
-  string service = 5;
-  string problem = 6;
 }
