@@ -5,8 +5,48 @@ package auth;
 option go_package = "thestrikem.complain.v1;complainv1";
 
 service Complain {
-  rpc Create (CreateRequest) returns (CreateResponse);
-  rpc AllComplains(AllComplainsRequest) returns (AllComplainsResponse);
+  rpc Create (CreateRequest) returns (CreateResponse); // Сделано
+  rpc AllComplains(AllComplainsRequest) returns (AllComplainsResponse); // Не сделано и не надо
+  rpc Services (ServicesRequest) returns (ServicesResponse); // Не сделано
+  rpc ProblemsByService (ProblemsByServiceRequest) returns (ProblemsByServiceResponse);
+  rpc ServiceStats (ServiceStatsRequest) returns (ServiceStatsResponse);
+}
+
+message ServiceItem {
+  string id = 1;
+  string name = 2;
+  string photo = 3;
+}
+message ServicesRequest {}
+message ServicesResponse {
+  repeated ServiceItem items = 1;
+}
+
+message ProblemItem {
+  string id = 1;
+  string type_en = 2;
+  string type_ru = 3;
+}
+message ProblemsByServiceRequest {
+  string id = 1;
+}
+message ProblemsByServiceResponse {
+  repeated ProblemItem problems = 1;
+}
+
+
+message PercentItem {
+  string problemID = 1;
+  int32 percent = 2;
+}
+message ServiceStatsRequest {
+  string id = 1;
+}
+message ServiceStatsResponse {
+  string name = 1;
+  string image = 2;
+  repeated PercentItem percent = 3;
+  repeated int32 details = 4;
 }
 
 message CreateRequest {
@@ -15,7 +55,6 @@ message CreateRequest {
   string service = 3;
   string problem = 4;
 }
-
 message CreateResponse {
   string status = 1;
   string error = 2;
@@ -27,7 +66,6 @@ message AllComplainsRequest {
   string service = 1;
   string problem = 2;
 }
-
 message AllComplainsResponse {
   repeated ComplainItem complain = 1;
 }

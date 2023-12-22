@@ -20,6 +20,9 @@ const _ = grpc.SupportPackageIsVersion7
 type ComplainClient interface {
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
 	AllComplains(ctx context.Context, in *AllComplainsRequest, opts ...grpc.CallOption) (*AllComplainsResponse, error)
+	Services(ctx context.Context, in *ServicesRequest, opts ...grpc.CallOption) (*ServicesResponse, error)
+	ProblemsByService(ctx context.Context, in *ProblemsByServiceRequest, opts ...grpc.CallOption) (*ProblemsByServiceResponse, error)
+	ServiceStats(ctx context.Context, in *ServiceStatsRequest, opts ...grpc.CallOption) (*ServiceStatsResponse, error)
 }
 
 type complainClient struct {
@@ -48,12 +51,42 @@ func (c *complainClient) AllComplains(ctx context.Context, in *AllComplainsReque
 	return out, nil
 }
 
+func (c *complainClient) Services(ctx context.Context, in *ServicesRequest, opts ...grpc.CallOption) (*ServicesResponse, error) {
+	out := new(ServicesResponse)
+	err := c.cc.Invoke(ctx, "/auth.Complain/Services", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *complainClient) ProblemsByService(ctx context.Context, in *ProblemsByServiceRequest, opts ...grpc.CallOption) (*ProblemsByServiceResponse, error) {
+	out := new(ProblemsByServiceResponse)
+	err := c.cc.Invoke(ctx, "/auth.Complain/ProblemsByService", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *complainClient) ServiceStats(ctx context.Context, in *ServiceStatsRequest, opts ...grpc.CallOption) (*ServiceStatsResponse, error) {
+	out := new(ServiceStatsResponse)
+	err := c.cc.Invoke(ctx, "/auth.Complain/ServiceStats", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ComplainServer is the server API for Complain service.
 // All implementations must embed UnimplementedComplainServer
 // for forward compatibility
 type ComplainServer interface {
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
 	AllComplains(context.Context, *AllComplainsRequest) (*AllComplainsResponse, error)
+	Services(context.Context, *ServicesRequest) (*ServicesResponse, error)
+	ProblemsByService(context.Context, *ProblemsByServiceRequest) (*ProblemsByServiceResponse, error)
+	ServiceStats(context.Context, *ServiceStatsRequest) (*ServiceStatsResponse, error)
 	mustEmbedUnimplementedComplainServer()
 }
 
@@ -66,6 +99,15 @@ func (UnimplementedComplainServer) Create(context.Context, *CreateRequest) (*Cre
 }
 func (UnimplementedComplainServer) AllComplains(context.Context, *AllComplainsRequest) (*AllComplainsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AllComplains not implemented")
+}
+func (UnimplementedComplainServer) Services(context.Context, *ServicesRequest) (*ServicesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Services not implemented")
+}
+func (UnimplementedComplainServer) ProblemsByService(context.Context, *ProblemsByServiceRequest) (*ProblemsByServiceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProblemsByService not implemented")
+}
+func (UnimplementedComplainServer) ServiceStats(context.Context, *ServiceStatsRequest) (*ServiceStatsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ServiceStats not implemented")
 }
 func (UnimplementedComplainServer) mustEmbedUnimplementedComplainServer() {}
 
@@ -116,6 +158,60 @@ func _Complain_AllComplains_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Complain_Services_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ServicesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComplainServer).Services(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/auth.Complain/Services",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComplainServer).Services(ctx, req.(*ServicesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Complain_ProblemsByService_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProblemsByServiceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComplainServer).ProblemsByService(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/auth.Complain/ProblemsByService",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComplainServer).ProblemsByService(ctx, req.(*ProblemsByServiceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Complain_ServiceStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ServiceStatsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComplainServer).ServiceStats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/auth.Complain/ServiceStats",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComplainServer).ServiceStats(ctx, req.(*ServiceStatsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Complain_ServiceDesc is the grpc.ServiceDesc for Complain service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -130,6 +226,18 @@ var Complain_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AllComplains",
 			Handler:    _Complain_AllComplains_Handler,
+		},
+		{
+			MethodName: "Services",
+			Handler:    _Complain_Services_Handler,
+		},
+		{
+			MethodName: "ProblemsByService",
+			Handler:    _Complain_ProblemsByService_Handler,
+		},
+		{
+			MethodName: "ServiceStats",
+			Handler:    _Complain_ServiceStats_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
